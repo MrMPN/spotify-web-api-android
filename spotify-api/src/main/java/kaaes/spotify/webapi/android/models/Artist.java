@@ -2,11 +2,14 @@ package kaaes.spotify.webapi.android.models;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 /**
  * <a href="https://developer.spotify.com/web-api/object-model/#artist-object-full">Artist object model</a>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Artist extends ArtistSimple {
     public Followers followers;
     public List<String> genres;

@@ -3,9 +3,13 @@ package kaaes.spotify.webapi.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.List;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TrackSimple implements Parcelable {
     public List<ArtistSimple> artists;
     public List<String> available_markets;
@@ -18,6 +22,7 @@ public class TrackSimple implements Parcelable {
     public String href;
     public String id;
     public String name;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     public String preview_url;
     public int track_number;
     public String type;

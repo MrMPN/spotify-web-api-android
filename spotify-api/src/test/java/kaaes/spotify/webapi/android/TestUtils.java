@@ -1,70 +1,51 @@
 package kaaes.spotify.webapi.android;
 
-import com.google.gson.Gson;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.robolectric.Robolectric;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
-import java.lang.reflect.Type;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 
-import retrofit.client.Header;
-import retrofit.client.Response;
-import retrofit.mime.TypedInput;
+import okhttp3.MediaType;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
+/*
+ * Restore spotify test services with:
+  * https://riggaroo.co.za/retrofit-2-mocking-http-responses/
+ */
 public class TestUtils {
     private static final String TEST_DATA_DIR = "/fixtures/";
     private static final int MAX_TEST_DATA_FILE_SIZE = 131072;
-    private static final Gson gson = new Gson();
 
-    private static class ResponseBody implements TypedInput {
+    public static <T> Response getResponseFromModel(int statusCode, T model) {
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        private final String mJson;
+        try {
+            ResponseBody responseBody = ResponseBody.create(
+                    MediaType.parse("application/json"),
+                    objectMapper.writeValueAsString(model)
 
-        private ResponseBody(String json) {
-            mJson = json;
+            );
+            return createResponse(statusCode, responseBody);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-
-        @Override
-        public String mimeType() {
-            return "application/json";
-        }
-
-        @Override
-        public long length() {
-            return mJson.length();
-        }
-
-        @Override
-        public InputStream in() throws IOException {
-            return new ByteArrayInputStream(mJson.getBytes(Charset.forName("UTF-8")));
-        }
+        return null;
     }
 
-    public static <T> Response getResponseFromModel(int statusCode, T model, Class<T> modelClass) {
-        ResponseBody responseBody = new ResponseBody(gson.toJson(model, modelClass));
-        return createResponse(statusCode, responseBody);
-    }
-
-    public static <T> Response getResponseFromModel(T model, Class<T> modelClass) {
-        ResponseBody responseBody = new ResponseBody(gson.toJson(model, modelClass));
-        return createResponse(200, responseBody);
-    }
-
-    public static <T> Response getResponseFromModel(T model, Type modelType) {
-        ResponseBody responseBody = new ResponseBody(gson.toJson(model, modelType));
-        return createResponse(200, responseBody);
+    public static <T> Response getResponseFromModel(T model) {
+        return getResponseFromModel(200, model);
     }
 
     private static Response createResponse(int statusCode, ResponseBody responseBody) {
-        return new Response("", statusCode, "", new ArrayList<Header>(), responseBody);
+        return new Response.Builder().code(statusCode).body(responseBody).build();
     }
 
     public static String readTestData(String fileName) {

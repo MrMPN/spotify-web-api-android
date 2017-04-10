@@ -3,9 +3,12 @@ package kaaes.spotify.webapi.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AlbumSimple implements Parcelable {
     public String album_type;
     public List<String> available_markets;
@@ -16,7 +19,7 @@ public class AlbumSimple implements Parcelable {
     public String name;
     public String type;
     public String uri;
-
+    public List<ArtistSimple> artists;
 
     @Override
     public int describeContents() {
@@ -34,6 +37,7 @@ public class AlbumSimple implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.type);
         dest.writeString(this.uri);
+        dest.writeTypedList(artists);
     }
 
     public AlbumSimple() {
@@ -49,6 +53,7 @@ public class AlbumSimple implements Parcelable {
         this.name = in.readString();
         this.type = in.readString();
         this.uri = in.readString();
+        this.artists = in.createTypedArrayList(ArtistSimple.CREATOR);
     }
 
     public static final Parcelable.Creator<AlbumSimple> CREATOR = new Parcelable.Creator<AlbumSimple>() {

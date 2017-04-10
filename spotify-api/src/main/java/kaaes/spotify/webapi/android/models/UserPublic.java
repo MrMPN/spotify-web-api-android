@@ -3,12 +3,15 @@ package kaaes.spotify.webapi.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * <a href="https://developer.spotify.com/web-api/object-model/#user-object-public">User object (public) model</a>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserPublic implements Parcelable {
     public String display_name;
     public Map<String, String> external_urls;

@@ -2,11 +2,14 @@ package kaaes.spotify.webapi.android.models;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Map;
 
 /**
  * <a href="https://developer.spotify.com/web-api/object-model/#track-object-full">Track object model</a>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Track extends TrackSimple {
     public AlbumSimple album;
     public Map<String, String> external_ids;

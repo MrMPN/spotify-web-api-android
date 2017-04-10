@@ -3,10 +3,9 @@ package kaaes.spotify.webapi.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import java.util.Map;
  * Base class for {@link kaaes.spotify.webapi.android.models.Playlist} and
  * {@link kaaes.spotify.webapi.android.models.PlaylistSimple}
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class PlaylistBase implements Parcelable {
     public Boolean collaborative;
     public Map<String, String> external_urls;
@@ -22,11 +22,12 @@ public abstract class PlaylistBase implements Parcelable {
     public List<Image> images;
     public String name;
     public UserPublic owner;
-    @SerializedName("public")
+    @JsonProperty("public")
     public Boolean is_public;
     public String snapshot_id;
     public String type;
     public String uri;
+    public Pager<PlaylistTrack> tracks;
 
     protected PlaylistBase() {
     }
@@ -49,6 +50,7 @@ public abstract class PlaylistBase implements Parcelable {
         dest.writeValue(snapshot_id);
         dest.writeValue(type);
         dest.writeValue(uri);
+        dest.writeParcelable(this.tracks, 0);
     }
 
     protected PlaylistBase(Parcel in) {
@@ -63,5 +65,6 @@ public abstract class PlaylistBase implements Parcelable {
         this.snapshot_id = (String) in.readValue(String.class.getClassLoader());
         this.type = (String) in.readValue(String.class.getClassLoader());
         this.uri = (String) in.readValue(String.class.getClassLoader());
+        this.tracks = in.readParcelable(Pager.class.getClassLoader());
     }
 }

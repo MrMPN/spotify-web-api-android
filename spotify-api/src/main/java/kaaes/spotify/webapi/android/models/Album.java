@@ -3,14 +3,16 @@ package kaaes.spotify.webapi.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * <a href="https://developer.spotify.com/web-api/object-model/#album-object-full">Album object model</a>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Album extends AlbumSimple implements Parcelable {
-    public List<ArtistSimple> artists;
     public List<Copyright> copyrights;
     public Map<String, String> external_ids;
     public List<String> genres;
@@ -18,7 +20,7 @@ public class Album extends AlbumSimple implements Parcelable {
     public String release_date;
     public String release_date_precision;
     public Pager<TrackSimple> tracks;
-
+    public String label;
 
     @Override
     public int describeContents() {
@@ -28,7 +30,6 @@ public class Album extends AlbumSimple implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeTypedList(artists);
         dest.writeTypedList(copyrights);
         dest.writeMap(this.external_ids);
         dest.writeStringList(this.genres);
@@ -36,6 +37,7 @@ public class Album extends AlbumSimple implements Parcelable {
         dest.writeString(this.release_date);
         dest.writeString(this.release_date_precision);
         dest.writeParcelable(this.tracks, flags);
+        dest.writeString(this.label);
     }
 
     public Album() {
@@ -43,7 +45,6 @@ public class Album extends AlbumSimple implements Parcelable {
 
     protected Album(Parcel in) {
         super(in);
-        this.artists = in.createTypedArrayList(ArtistSimple.CREATOR);
         this.copyrights = in.createTypedArrayList(Copyright.CREATOR);
         this.external_ids = in.readHashMap(ClassLoader.getSystemClassLoader());
         this.genres = in.createStringArrayList();
@@ -51,6 +52,7 @@ public class Album extends AlbumSimple implements Parcelable {
         this.release_date = in.readString();
         this.release_date_precision = in.readString();
         this.tracks = in.readParcelable(Pager.class.getClassLoader());
+        this.label = in.readString();
     }
 
     public static final Parcelable.Creator<Album> CREATOR = new Parcelable.Creator<Album>() {

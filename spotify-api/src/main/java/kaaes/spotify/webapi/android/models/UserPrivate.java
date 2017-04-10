@@ -2,9 +2,12 @@ package kaaes.spotify.webapi.android.models;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * <a href="https://developer.spotify.com/web-api/object-model/#user-object-private">User object (private) model</a>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserPrivate extends UserPublic {
     public String birthdate;
     public String country;

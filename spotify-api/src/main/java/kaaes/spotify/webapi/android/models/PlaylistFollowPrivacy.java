@@ -3,10 +3,10 @@ package kaaes.spotify.webapi.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlaylistFollowPrivacy implements Parcelable {
-    @SerializedName("public")
+    @JsonProperty("public")
     public Boolean is_public;
 
     @Override

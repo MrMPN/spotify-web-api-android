@@ -3,14 +3,15 @@ package kaaes.spotify.webapi.android;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.google.gson.GsonBuilder;
 
 import org.fest.util.Arrays;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import kaaes.spotify.webapi.android.models.Album;
@@ -64,7 +65,7 @@ public class ParcelableModelsTest {
     @Test
     public void allParcelables() throws IllegalAccessException, InstantiationException, NoSuchFieldException {
 
-        ModelPopulator populator = new ModelPopulator("CREATOR", "$jacocoData");
+        ModelPopulator populator = new ModelPopulator("CREATOR");
 
         for (Class<? extends Parcelable> modelClass : getModelClasses()) {
 
@@ -151,32 +152,62 @@ public class ParcelableModelsTest {
     @Test
     public void artistsAreGoodParcelableCitizen() {
         String body = TestUtils.readTestData("artists.json");
-        Artists fixture = new GsonBuilder().create().fromJson(body, Artists.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Artists fixture = null;
+        try {
+            fixture = mapper.readValue(body, Artists.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         testSingleParcelable(fixture);
     }
 
     @Test
     public void albumsAreGoodParcelableCitizen() {
         String body = TestUtils.readTestData("albums.json");
-        Albums fixture = new GsonBuilder().create().fromJson(body, Albums.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Albums fixture = null;
+        try {
+            fixture = mapper.readValue(body, Albums.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         testSingleParcelable(fixture);
     }
 
     @Test
     public void tracksAreGoodParcelableCitizen() {
         String body = TestUtils.readTestData("tracks.json");
-        Tracks fixture = new GsonBuilder().create().fromJson(body, Tracks.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Tracks fixture = null;
+        try {
+            fixture = mapper.readValue(body, Tracks.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         testSingleParcelable(fixture);
     }
 
     @Test
     public void usersAreGoodParcelableCitizens() {
         String body = TestUtils.readTestData("user.json");
-        UserPublic userPublic = new GsonBuilder().create().fromJson(body, UserPublic.class);
+        ObjectMapper mapper = new ObjectMapper();
+        UserPublic userPublic = null;
+        try {
+            userPublic = mapper.readValue(body, UserPublic.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         testSingleParcelable(userPublic);
 
         body = TestUtils.readTestData("current-user.json");
-        UserPrivate userPrivate = new GsonBuilder().create().fromJson(body, UserPrivate.class);
+        UserPrivate userPrivate = null;
+        try {
+            userPrivate = mapper.readValue(body, UserPrivate.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         testSingleParcelable(userPrivate);
     }
 
