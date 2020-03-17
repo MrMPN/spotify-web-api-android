@@ -177,7 +177,7 @@ public class SpotifyServiceAndroidTest {
     public void getFollowedArtistsWithOptions() throws Exception {
         Map<String, Object> options = new HashMap<>();
         options.put("limit", 10);
-        Call<ArtistsCursorPager> call = mService.getFollowedArtists(options);
+        Call<ArtistsCursorPager> call = mService.followedArtists;
         retrofit2.Response<ArtistsCursorPager> payload = call.execute();
 
         Request request = getGenericRequest("https://api.spotify.com/v1/me/following?type=artist&limit=10");
