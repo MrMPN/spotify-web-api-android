@@ -7,7 +7,6 @@ import java.util.Map;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
-import retrofit.client.Response;
 
 public class SearchPager {
 
@@ -39,20 +38,20 @@ public class SearchPager {
 
     private void getData(String query, int offset, final int limit, final CompleteListener listener) {
 
-        Map<String, Object> options = new HashMap<>();
-        options.put(SpotifyService.OFFSET, offset);
-        options.put(SpotifyService.LIMIT, limit);
-
-        mSpotifyApi.searchTracks(query, options, new SpotifyCallback<TracksPager>() {
-            @Override
-            public void success(TracksPager tracksPager, Response response) {
-                listener.onComplete(tracksPager.tracks.items);
-            }
-
-            @Override
-            public void failure(SpotifyError error) {
-                listener.onError(error);
-            }
-        });
+//        Map<String, Object> options = new HashMap<>();
+//        options.put(SpotifyService.OFFSET, offset);
+//        options.put(SpotifyService.LIMIT, limit);
+//
+//        mSpotifyApi.searchTracks(query, options, new SpotifyCallback<TracksPager>() {
+//            @Override
+//            public void success(TracksPager tracksPager, Response response) {
+//                listener.onComplete(tracksPager.tracks.items);
+//            }
+//
+//            @Override
+//            public void failure(SpotifyError error) {
+//                listener.onError(error);
+//            }
+//        });
     }
 }
